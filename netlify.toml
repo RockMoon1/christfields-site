@@ -1,0 +1,83 @@
+# ── Redirects ────────────────────────────────────────────────────────────────
+
+# Force HTTPS
+[[redirects]]
+  from   = "http://christfields2717.com/*"
+  to     = "https://christfields2717.com/:splat"
+  status = 301
+  force  = true
+
+# Block dev/preview file from public access
+[[redirects]]
+  from   = "/logo-preview.html"
+  to     = "/"
+  status = 301
+  force  = true
+
+# ── Security Headers (all routes) ────────────────────────────────────────────
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+
+    # HSTS — 2 years, subdomains, on Chrome preload list
+    Strict-Transport-Security    = "max-age=63072000; includeSubDomains; preload"
+
+    # Clickjacking — belt-and-suspenders with frame-ancestors in CSP
+    X-Frame-Options              = "DENY"
+
+    # Prevent MIME-sniffing attacks
+    X-Content-Type-Options       = "nosniff"
+
+    # Legacy XSS filter (IE/old Edge) — 0 disables the broken auditor safely
+    X-XSS-Protection             = "0"
+
+    # Limit referrer data sent to third parties
+    Referrer-Policy              = "strict-origin-when-cross-origin"
+
+    # Disable every browser feature this site does not use
+    # Includes Privacy Sandbox APIs added in 2023-2025
+    Permissions-Policy           = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=(), ambient-light-sensor=(), bluetooth=(), serial=(), hid=(), nfc=(), screen-wake-lock=(), xr-spatial-tracking=(), browsing-topics=(), join-ad-interest-group=(), run-ad-auction=(), attribution-reporting=(), private-aggregation=(), shared-storage=(), shared-storage-select-url=(), identity-credentials-get=()"
+
+    # Prevent cross-origin window hijacking
+    Cross-Origin-Opener-Policy   = "same-origin"
+
+    # Prevent other origins from hotlinking our assets
+    Cross-Origin-Resource-Policy = "same-origin"
+
+    # Content Security Policy
+    # script-src 'self'            → only script.js; no inline scripts, no eval
+    # style-src 'self' + googleapis → our CSS + Google Fonts stylesheet
+    # font-src gstatic             → Google Fonts files
+    # img-src 'self' data:         → local images + data: URIs used by CSS
+    # connect-src 'self'           → fetch() POST to / for Netlify Forms
+    # form-action 'self'           → form submissions only to same origin
+    # frame-ancestors 'none'       → no iframe embedding anywhere
+    # base-uri 'self'              → block <base> tag injection
+    # object-src 'none'            → no Flash / plugins
+    Content-Security-Policy      = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+
+# ── Cache Control ─────────────────────────────────────────────────────────────
+# HTML pages: always revalidate so updates propagate immediately after deploy
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma        = "no-cache"
+
+# CSS + JS: revalidate on each request (files are not hash-versioned)
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Static assets (images, fonts): cache for 7 days — rarely change
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"

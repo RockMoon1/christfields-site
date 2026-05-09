@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /logo-preview.html
+
+Sitemap: https://christfields2717.com/sitemap.xml

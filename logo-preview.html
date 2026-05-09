@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo Animation Options — Christ Fields</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #060908;
+      --black-2: #0C110E;
+      --black-3: #131A16;
+      --gold:    #C9A548;
+      --gold-lt: #E4C97A;
+      --white:   #F0F2EE;
+      --silver:  #8A9A92;
+      --muted:   #4E5E57;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 56px 2rem 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.7rem;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      color: var(--white);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.01em;
+      text-align: center;
+    }
+    h1 em { color: var(--gold-lt); font-style: italic; }
+    .page-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 3.5rem;
+      text-align: center;
+      line-height: 1.65;
+      max-width: 480px;
+    }
+
+    /* =====================================================
+       OPTIONS GRID
+       ===================================================== */
+    .options-grid {
+      display: flex;
+      gap: 1.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 1100px;
+      margin-bottom: 4rem;
+    }
+
+    .option-card {
+      background: var(--black-3);
+      border: 1px solid rgba(255,255,255,0.055);
+      border-radius: 6px;
+      padding: 2rem 1.5rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      width: 185px;
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative;
+    }
+    .option-card:hover {
+      border-color: rgba(201,165,72,0.4);
+      transform: translateY(-4px);
+    }
+    .option-card.selected {
+      border-color: var(--gold);
+      background: rgba(201,165,72,0.06);
+    }
+    .option-card.selected::after {
+      content: '✓ Selected';
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: #09100A;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+
+    .option-letter {
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .option-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--white);
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    .option-desc {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* =====================================================
+       SHARED LOGO STAGE
+       ===================================================== */
+    .stage {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      position: relative;
+      z-index: 3;
+      width: 108px;
+      height: auto;
+      display: block;
+    }
+
+    /* =====================================================
+       OPTION A — "Still"
+       Original logo, zero animation. Reference point.
+       ===================================================== */
+
+    /* No styles needed — just the logo */
+
+    /* =====================================================
+       OPTION B — "Breathing"
+       Barely-there warm pulse. 5s cycle. No particles.
+       ===================================================== */
+    .b-glow {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 58px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,200,60,0.38) 0%, transparent 70%);
+      filter: blur(14px);
+      animation: breathe 5s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+    @keyframes breathe {
+      0%   { opacity: 0.3; transform: translateX(-50%) scale(0.9); }
+      100% { opacity: 0.85; transform: translateX(-50%) scale(1.1); }
+    }
+    .b-logo { animation: breatheLogo 5s ease-in-out infinite alternate; }
+    @keyframes breatheLogo {
+      0%   { filter: brightness(1)    drop-shadow(0 0 3px rgba(255,180,0,0.2)); }
+      100% { filter: brightness(1.04) drop-shadow(0 0 9px rgba(255,200,50,0.5)); }
+    }
+
+    /* =====================================================
+       OPTION C — "Warm Glow"
+       Steady golden halo, gentle flicker, no particles.
+       ===================================================== */
+    .c-glow {
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 78px;
+      height: 68px;
+      border-radius: 50% 50% 40% 40%;
+      background: radial-gradient(ellipse at 50% 65%,
+        rgba(255,210,50,0.55) 0%,
+        rgba(255,120,0, 0.3)  40%,
+        transparent 70%
+      );
+      filter: blur(10px);
+      animation: warmPulse 2.5s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+    @keyframes warmPulse {
+      0%   { opacity: 0.55; transform: translateX(-50%) scale(0.92); }
+      100% { opacity: 1;    transform: translateX(-50%) scale(1.08); }
+    }
+    .c-logo { animation: warmFlicker 3s ease-in-out infinite; }
+    @keyframes warmFlicker {
+      0%,100% { filter: brightness(1)    drop-shadow(0 0 5px  rgba(255,170,0,0.35)); }
+      30%      { filter: brightness(1.06) drop-shadow(0 0 11px rgba(255,210,40,0.6)); }
+      55%      { filter: brightness(0.98) drop-shadow(0 0 4px  rgba(255,130,0,0.25)); }
+      80%      { filter: brightness(1.04) drop-shadow(0 0 9px  rgba(255,190,20,0.5)); }
+    }
+
+    /* =====================================================
+       OPTION D — "Ember Drift"
+       Soft glow + a few slow gentle embers. Tasteful.
+       ===================================================== */
+    .d-glow {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 70px;
+      border-radius: 50% 50% 38% 38%;
+      background: radial-gradient(ellipse at 50% 68%,
+        rgba(255,210,45,0.6)  0%,
+        rgba(255,110,0, 0.35) 42%,
+        transparent 70%
+      );
+      filter: blur(10px);
+      animation: dGlow 2.2s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+    @keyframes dGlow {
+      0%   { opacity: 0.6; transform: translateX(-50%) scale(0.9) scaleY(0.95); }
+      100% { opacity: 1;   transform: translateX(-50%) scale(1.1) scaleY(1.05); }
+    }
+    .d-logo { animation: dFlicker 2.8s ease-in-out infinite; }
+    @keyframes dFlicker {
+      0%,100% { filter: brightness(1)    drop-shadow(0 0 6px  rgba(255,165,0,0.4));  }
+      20%      { filter: brightness(1.07) drop-shadow(0 0 14px rgba(255,210,40,0.7)); }
+      42%      { filter: brightness(0.97) drop-shadow(0 0 4px  rgba(255,110,0,0.3));  }
+      68%      { filter: brightness(1.05) drop-shadow(0 0 11px rgba(255,185,20,0.6)); }
+    }
+    .d-embers { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+    .d-embers span {
+      position: absolute;
+      bottom: 60%;
+      left: calc(50% + var(--ox, 0px));
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: var(--col, #FFD060);
+      opacity: 0;
+      animation: floatD var(--dur, 2.5s) ease-out var(--delay, 0s) infinite;
+    }
+    @keyframes floatD {
+      0%   { opacity: 0;    transform: translate(0, 0) scale(1); }
+      10%  { opacity: 0.85; }
+      75%  { opacity: 0.35; }
+      100% { opacity: 0;    transform: translate(var(--drift,6px), -50px) scale(0.2); }
+    }
+    .d-embers span:nth-child(1) { --ox:-10px; --drift: 5px; --dur:2.8s; --delay:0.0s; --col:#FFD700; }
+    .d-embers span:nth-child(2) { --ox:  6px; --drift:-6px; --dur:3.2s; --delay:0.7s; --col:#FFA020; }
+    .d-embers span:nth-child(3) { --ox: -3px; --drift: 9px; --dur:2.5s; --delay:1.4s; --col:#FFE080; }
+    .d-embers span:nth-child(4) { --ox: 10px; --drift:-4px; --dur:3.0s; --delay:0.4s; --col:#FFB830; }
+    .d-embers span:nth-child(5) { --ox: -8px; --drift: 3px; --dur:2.7s; --delay:1.8s; --col:#FF8C00; }
+    .d-embers span:nth-child(6) { --ox:  4px; --drift:-8px; --dur:3.4s; --delay:1.1s; --col:#FFEE70; }
+
+    /* =====================================================
+       OPTION E — "Full Fire" (current build)
+       Glow + flicker + 14 active embers. Medium energy.
+       ===================================================== */
+    .e-glow {
+      position: absolute;
+      top: 6px; left: 50%;
+      transform: translateX(-50%);
+      width: 82px; height: 72px;
+      border-radius: 50% 50% 38% 38%;
+      background: radial-gradient(ellipse at 50% 68%,
+        rgba(255,215,40,0.7)  0%,
+        rgba(255,120,0, 0.45) 38%,
+        rgba(255,50,0,  0.2)  60%,
+        transparent 75%
+      );
+      filter: blur(10px);
+      animation: eGlow 1.9s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+    .e-glow2 {
+      position: absolute;
+      top: 14px; left: 50%;
+      transform: translateX(-50%);
+      width: 56px; height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,90,0,0.45) 0%, transparent 70%);
+      filter: blur(14px);
+      animation: eGlow 1.5s ease-in-out infinite alternate-reverse;
+      z-index: 1;
+    }
+    @keyframes eGlow {
+      0%   { opacity: 0.55; transform: translateX(-50%) scale(0.88) scaleY(0.93); }
+      100% { opacity: 1;    transform: translateX(-50%) scale(1.12) scaleY(1.07); }
+    }
+    .e-logo { animation: eFlicker 2.6s ease-in-out infinite; }
+    @keyframes eFlicker {
+      0%   { filter: brightness(1)    drop-shadow(0 0 8px  rgba(255,160,0,0.45)); }
+      15%  { filter: brightness(1.08) drop-shadow(0 0 16px rgba(255,210,40,0.75)); }
+      28%  { filter: brightness(0.97) drop-shadow(0 0 5px  rgba(255,100,0,0.30)); }
+      50%  { filter: brightness(1.06) drop-shadow(0 0 14px rgba(255,190,20,0.65)); }
+      70%  { filter: brightness(1.0)  drop-shadow(0 0 9px  rgba(255,150,0,0.50)); }
+      85%  { filter: brightness(1.09) drop-shadow(0 0 18px rgba(255,220,50,0.80)); }
+      100% { filter: brightness(1)    drop-shadow(0 0 8px  rgba(255,160,0,0.45)); }
+    }
+    .e-embers { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+    .e-embers span {
+      position: absolute;
+      bottom: 61%;
+      left: calc(50% + var(--ox, 0px));
+      width: var(--sz, 2px); height: var(--sz, 2px);
+      border-radius: 50%;
+      background: var(--col, #FFD700);
+      opacity: 0;
+      animation: floatE var(--dur,2s) ease-out var(--delay,0s) infinite;
+    }
+    @keyframes floatE {
+      0%   { opacity: 0;    transform: translate(0,0) scale(1); }
+      8%   { opacity: 0.95; }
+      70%  { opacity: 0.5;  }
+      100% { opacity: 0;    transform: translate(var(--drift,8px), -58px) rotate(var(--rot,30deg)) scale(0.2); }
+    }
+    .e-embers span:nth-child(1)  { --ox:-14px; --drift: 5px; --rot:20deg;  --dur:1.9s; --delay:0.0s; --col:#FFD700; --sz:2px; }
+    .e-embers span:nth-child(2)  { --ox:  7px; --drift:-9px; --rot:-25deg; --dur:2.2s; --delay:0.4s; --col:#FF8C00; --sz:2px; }
+    .e-embers span:nth-child(3)  { --ox: -3px; --drift:12px; --rot:35deg;  --dur:1.6s; --delay:0.8s; --col:#FFF090; --sz:1px; }
+    .e-embers span:nth-child(4)  { --ox: 12px; --drift:-4px; --rot:-15deg; --dur:2.4s; --delay:1.2s; --col:#FFB830; --sz:2px; }
+    .e-embers span:nth-child(5)  { --ox: -9px; --drift: 8px; --rot:50deg;  --dur:2.0s; --delay:0.6s; --col:#FF6400; --sz:1px; }
+    .e-embers span:nth-child(6)  { --ox:  2px; --drift:-6px; --rot:-40deg; --dur:2.7s; --delay:1.6s; --col:#FFE066; --sz:1px; }
+    .e-embers span:nth-child(7)  { --ox:-17px; --drift:15px; --rot:28deg;  --dur:1.7s; --delay:1.0s; --col:#FFC020; --sz:2px; }
+    .e-embers span:nth-child(8)  { --ox:  9px; --drift: 4px; --rot:-10deg; --dur:2.3s; --delay:0.2s; --col:#FF8000; --sz:2px; }
+    .e-embers span:nth-child(9)  { --ox: -5px; --drift:-4px; --rot:45deg;  --dur:1.5s; --delay:1.4s; --col:#FFEE80; --sz:1px; }
+    .e-embers span:nth-child(10) { --ox: 15px; --drift:-11px;--rot:-30deg; --dur:2.1s; --delay:0.7s; --col:#FF9020; --sz:2px; }
+    .e-embers span:nth-child(11) { --ox: -1px; --drift: 7px; --rot:15deg;  --dur:2.5s; --delay:1.9s; --col:#FFD040; --sz:1px; }
+    .e-embers span:nth-child(12) { --ox:-12px; --drift:-7px; --rot:-50deg; --dur:1.8s; --delay:0.3s; --col:#FF7000; --sz:2px; }
+    .e-embers span:nth-child(13) { --ox:  5px; --drift:10px; --rot:60deg;  --dur:2.0s; --delay:1.1s; --col:#FFE030; --sz:1px; }
+    .e-embers span:nth-child(14) { --ox: -8px; --drift:-3px; --rot:-20deg; --dur:1.6s; --delay:0.5s; --col:#FFA020; --sz:2px; }
+
+    /* =====================================================
+       NOTE
+       ===================================================== */
+    .note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      max-width: 540px;
+      line-height: 1.7;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 2rem;
+    }
+    .note strong { color: var(--silver); font-weight: 400; }
+  </style>
+</head>
+<body>
+
+  <p class="page-eyebrow">Christ Fields — Logo Variants</p>
+  <h1>Pick Your <em>Direction</em></h1>
+  <p class="page-sub">Five options from original-and-still to fully alive. All preserve the logo exactly as designed. White background removed visually via CSS — identical result once the PNG is cleaned up.</p>
+
+  <div class="options-grid">
+
+    <!-- A: Still -->
+    <div class="option-card" onclick="select(this)">
+      <span class="option-letter">Option A</span>
+      <div class="stage">
+        <img src="assets/logo.png" class="logo" alt="Still logo">
+      </div>
+      <div class="option-name">Still</div>
+      <p class="option-desc">Original logo, no animation. Clean reference point. Perfect if the fire stays as a static graphic.</p>
+    </div>
+
+    <!-- B: Breathing -->
+    <div class="option-card" onclick="select(this)">
+      <span class="option-letter">Option B</span>
+      <div class="stage">
+        <div class="b-glow"></div>
+        <img src="assets/logo.png" class="logo b-logo" alt="Breathing logo">
+      </div>
+      <div class="option-name">Breathing</div>
+      <p class="option-desc">Almost invisible warm pulse. 5s cycle. You feel it more than you see it. Zero distraction.</p>
+    </div>
+
+    <!-- C: Warm Glow -->
+    <div class="option-card" onclick="select(this)">
+      <span class="option-letter">Option C</span>
+      <div class="stage">
+        <div class="c-glow"></div>
+        <img src="assets/logo.png" class="logo c-logo" alt="Warm glow logo">
+      </div>
+      <div class="option-name">Warm Glow</div>
+      <p class="option-desc">Steady golden halo with gentle flicker. No particles. Looks like candlelight — calm and intentional.</p>
+    </div>
+
+    <!-- D: Ember Drift -->
+    <div class="option-card" onclick="select(this)">
+      <span class="option-letter">Option D</span>
+      <div class="stage">
+        <div class="d-glow"></div>
+        <div class="d-embers">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+        <img src="assets/logo.png" class="logo d-logo" alt="Ember drift logo">
+      </div>
+      <div class="option-name">Ember Drift</div>
+      <p class="option-desc">Soft glow with 6 slow, small embers rising gently. Feels alive without demanding attention.</p>
+    </div>
+
+    <!-- E: Full Fire -->
+    <div class="option-card" onclick="select(this)">
+      <span class="option-letter">Option E</span>
+      <div class="stage">
+        <div class="e-glow"></div>
+        <div class="e-glow2"></div>
+        <div class="e-embers">
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <img src="assets/logo.png" class="logo e-logo" alt="Full fire logo">
+      </div>
+      <div class="option-name">Full Fire</div>
+      <p class="option-desc">Active glow, flame flicker, and 14 ember particles rising continuously. Maximum energy.</p>
+    </div>
+
+  </div>
+
+  <p class="note">
+    <strong>Click any card to mark your preference.</strong> &nbsp;Each option is pure CSS — no images modified, no performance cost.
+    Once you choose a direction we can blend styles, adjust speed, change ember count, shift glow color, or anything else.
+    Background removal + upscaling happens as a separate step after the animation style is locked in.
+  </p>
+
+  <script>
+    function select(card) {
+      document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    }
+  </script>
+
+</body>
+</html>
