@@ -7,11 +7,30 @@
   status = 301
   force  = true
 
-# Block dev/preview file from public access
+# Block dev/preview files from public access
 [[redirects]]
   from   = "/logo-preview.html"
   to     = "/"
   status = 301
+  force  = true
+
+# Block Node.js project files — these are dev-only and must not be served
+[[redirects]]
+  from   = "/package.json"
+  to     = "/404.html"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/package-lock.json"
+  to     = "/404.html"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/node_modules/*"
+  to     = "/404.html"
+  status = 404
   force  = true
 
 # ── Security Headers (all routes) ────────────────────────────────────────────

@@ -1,0 +1,4 @@
+# Files that exist locally for dev tooling but must never be deployed
+package.json
+package-lock.json
+node_modules/
