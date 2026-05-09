@@ -1,6 +1,11 @@
 # Node.js dependencies (used for local image-processing scripts only)
 node_modules/
 
+# Temp files created by file editors / tools
+*.tmp.*
+*.tmp
+.claude/
+
 # OS junk
 .DS_Store
 Thumbs.db
