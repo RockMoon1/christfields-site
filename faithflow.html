@@ -256,7 +256,6 @@
           id="faithflowForm"
         >
           <input type="hidden" name="form-name" value="faithflow">
-          <input type="hidden" name="selected-interest" id="ffSelectedInterest" value="">
           <p hidden><label>Do not fill this out: <input name="bot-field"></label></p>
 
           <div class="form-row">
@@ -287,20 +286,18 @@
           </button>
         </form>
 
-        <!-- Success card. Shown after form submits, with dynamic resource list. -->
+        <!-- Success card. Shown after form submits. -->
         <div class="ff-success-card reveal" id="ffSuccess" hidden>
-          <span class="scripture-symbol">✦</span>
+          <span class="scripture-symbol">&#10022;</span>
           <h3 class="ff-success-title">Thank You.</h3>
           <p class="ff-success-msg">Your message has been received. We'll review it and reach out when there is a fitting next step.</p>
 
-          <!-- Dynamic content section. Populated by script.js based on dropdown choice. -->
-          <div class="ff-success-resources" id="ffSuccessResources">
-            <div class="ff-success-divider"></div>
-            <span class="ff-success-eyebrow" id="ffResourcesEyebrow">You Asked About</span>
-            <h4 class="ff-success-resources-title" id="ffResourcesTitle"></h4>
-            <p class="ff-success-resources-intro" id="ffResourcesIntro" hidden></p>
-            <div class="ff-success-content" id="ffResourcesList"></div>
+          <div class="ff-success-art" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
           </div>
+          <p class="ff-success-verse">"As iron sharpens iron, so one person sharpens another."</p>
 
           <a href="#what" class="btn btn-ghost ff-success-btn" id="ffBackBtn">&larr; Back to FaithFlow</a>
         </div>
@@ -355,7 +352,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=faithflow-interest-20260509"></script>
+  <script src="script.js?v=faithflow-thank-you-20260509"></script>
   <script src="ember-field.js"></script>
 </body>
 </html>
