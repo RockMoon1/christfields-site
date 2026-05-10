@@ -1702,3 +1702,135 @@ em  { font-style: italic; }
   .ff-success-resource a { padding: 0.85rem 0.2rem; }
   .ff-success-resource a:hover { padding-left: 0.5rem; }
 }
+
+/* --- Tailored content sections inside success card --- */
+.ff-success-card { max-width: 720px; }
+
+.ff-success-content {
+  text-align: left;
+  margin-top: 0.5rem;
+}
+
+.ff-success-section {
+  margin-bottom: 2.4rem;
+}
+.ff-success-section:last-child {
+  margin-bottom: 0.5rem;
+}
+
+.ff-success-section-heading {
+  font-family: var(--f-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--gold-lt);
+  margin-bottom: 0.85rem;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--border-sub);
+  padding-bottom: 0.55rem;
+}
+
+.ff-success-section-intro {
+  font-size: 0.9rem;
+  color: var(--silver);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* Prose paragraphs */
+.ff-success-section--prose p {
+  font-size: 0.96rem;
+  color: var(--white-dim);
+  line-height: 1.75;
+  margin-bottom: 0.9rem;
+}
+.ff-success-section--prose p:last-child {
+  margin-bottom: 0;
+}
+.ff-success-section--prose em {
+  color: var(--gold-lt);
+  font-style: italic;
+}
+.ff-success-section--prose strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* Lists (How groups work, criteria, etc.) */
+.ff-success-section--list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ff-success-section--list li {
+  position: relative;
+  padding: 0.75rem 0 0.75rem 1.7rem;
+  font-size: 0.94rem;
+  color: var(--white-dim);
+  line-height: 1.65;
+  border-bottom: 1px solid var(--border-sub);
+}
+.ff-success-section--list li:last-child {
+  border-bottom: none;
+}
+.ff-success-section--list li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  color: var(--gold);
+  font-size: 0.75rem;
+}
+.ff-success-section--list strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* Scriptures */
+.ff-success-section--scriptures ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+.ff-success-scripture {
+  background: var(--black-3);
+  border: 1px solid var(--border-sub);
+  border-radius: 3px;
+  padding: 1.1rem 1.3rem;
+}
+.ff-success-scripture cite {
+  display: block;
+  font-style: normal;
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 0.55rem;
+}
+.ff-success-scripture blockquote {
+  font-family: var(--f-display);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--white-dim);
+  line-height: 1.6;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Resources inside content (re-uses earlier .ff-success-resource styles) */
+.ff-success-section--resources .ff-success-resources-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border-sub);
+}
+
+@media (max-width: 600px) {
+  .ff-success-section-heading { font-size: 1.1rem; }
+  .ff-success-section { margin-bottom: 1.8rem; }
+  .ff-success-scripture { padding: 0.9rem 1rem; }
+}
