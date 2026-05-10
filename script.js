@@ -344,7 +344,8 @@ function storeFaithflowInterest(value) {
 
 function getFaithflowInterest(form, preferredValue) {
   const selectedValue = form?.querySelector('[name="interest"]')?.value;
-  return normalizeFaithflowInterest(preferredValue || selectedValue || readStoredFaithflowInterest());
+  const hiddenValue = form?.querySelector('[name="selected-interest"]')?.value;
+  return normalizeFaithflowInterest(preferredValue || selectedValue || hiddenValue || readStoredFaithflowInterest());
 }
 
 // Render a tailored content section based on type
@@ -483,17 +484,25 @@ document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
   // so even if JS doesn't intercept the submit, the URL fallback knows what the user picked.
   if (form.getAttribute('name') === 'faithflow') {
     const select = form.querySelector('[name="interest"]');
+    const hiddenInterest = form.querySelector('[name="selected-interest"]');
     if (select) {
       syncFaithflowAction = () => {
-        const v = normalizeFaithflowInterest(select.value || readStoredFaithflowInterest());
-        if (select.value) {
-          storeFaithflowInterest(v);
+        const selected = select.value;
+        if (!selected) {
+          if (hiddenInterest) hiddenInterest.value = '';
+          form.action = '/faithflow.html?submitted=1';
+          return;
         }
-        form.action = v
-          ? `/faithflow.html?submitted=1&interest=${encodeURIComponent(v)}`
-          : '/faithflow.html?submitted=1';
+        const v = normalizeFaithflowInterest(selected);
+        storeFaithflowInterest(v);
+        if (hiddenInterest) {
+          hiddenInterest.value = v;
+        }
+        form.action = `/faithflow.html?submitted=1&interest=${encodeURIComponent(v)}`;
       };
-      select.addEventListener('change', syncFaithflowAction);
+      ['change', 'input', 'blur'].forEach(eventName => {
+        select.addEventListener(eventName, syncFaithflowAction);
+      });
       syncFaithflowAction();
     }
   }
@@ -505,6 +514,7 @@ document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     syncFaithflowAction();
+    const submitInterest = getFaithflowInterest(form);
 
     const now = Date.now();
     if (now - lastSubmitTime < RATE_LIMIT_MS) {
@@ -532,7 +542,7 @@ document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
       });
 
       if (response.ok || response.status === 200 || response.redirected) {
-        showFormSuccess(form);
+        showFormSuccess(form, submitInterest);
       } else {
         throw new Error(`Status ${response.status}`);
       }
