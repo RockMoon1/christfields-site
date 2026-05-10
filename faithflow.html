@@ -118,7 +118,7 @@
               <span class="ff-active-dot"></span>Active
             </span>
           </div>
-          <p class="ff-group-desc">An active group of friends who meet occasionally, do life together, encourage each other, and walk through faith, discipline, and community. Rooted in Proverbs 27:17 — <em>"As iron sharpens iron, so one person sharpens another."</em></p>
+          <p class="ff-group-desc">Iron and Ember is the first active FaithFlow group and serves as an early model for what future groups may become. A small group of friends meeting in person, walking through faith, discipline, and community together &mdash; rooted in Proverbs 27:17, <em>"As iron sharpens iron, so one person sharpens another."</em></p>
           <div class="ff-group-tags">
             <span>Friendship</span>
             <span>Accountability</span>
@@ -127,9 +127,9 @@
           </div>
           <div class="ff-group-meta">
             <span class="ff-meta-label">Rhythm</span>
-            <span class="ff-meta-value">Occasional gatherings and life together</span>
+            <span class="ff-meta-value">In-person gatherings and shared life</span>
           </div>
-          <p class="ff-group-note">Members are assigned, not self-enrolled. To join or start your own group, reach out below.</p>
+          <p class="ff-group-note">Iron and Ember is not currently open for public enrollment. If you'd like to be considered for a future group, reach out below.</p>
         </div>
       </div>
     </section>
@@ -145,7 +145,7 @@
           <li class="ff-step reveal">
             <span class="ff-step-num">1</span>
             <h3 class="ff-step-title">Small and Personal</h3>
-            <p>Groups stay intentionally small. Around every 10 people, a new group can form to maintain depth and accountability.</p>
+            <p>Groups stay intentionally small. As interest grows, new groups may be formed with prayerful leadership and clear structure.</p>
           </li>
           <li class="ff-step reveal">
             <span class="ff-step-num">2</span>
@@ -276,6 +276,7 @@
           class="waitlist-form reveal"
           name="faithflow"
           method="POST"
+          action="/faithflow.html?submitted=1"
           data-netlify="true"
           netlify-honeypot="bot-field"
           id="faithflowForm"
@@ -290,10 +291,10 @@
           <div class="form-row form-row--full">
             <select name="interest" required>
               <option value="" disabled selected>What brings you here?</option>
-              <option value="learn">Learn more about FaithFlow</option>
-              <option value="iron-and-ember">Join Iron and Ember</option>
-              <option value="start-group">Start a FaithFlow group</option>
-              <option value="future-leader">Become a future leader</option>
+              <option value="community">I'm interested in FaithFlow community</option>
+              <option value="future-group">I'd like to be considered for a future group</option>
+              <option value="help-start">I'm interested in helping start a group</option>
+              <option value="learn-more">I just want to learn more</option>
             </select>
           </div>
           <div class="form-row form-row--full">
@@ -311,7 +312,16 @@
           </button>
         </form>
 
-        <p class="form-note reveal">No spam. Real responses from proverbs@christfields2717.com</p>
+        <!-- Success card — shown after form submits -->
+        <div class="ff-success-card reveal" id="ffSuccess" hidden>
+          <span class="scripture-symbol">✦</span>
+          <h3 class="ff-success-title">Thank You.</h3>
+          <p class="ff-success-msg">Your message has been received. We'll review it and reach out when there is a fitting next step.</p>
+          <p class="ff-success-verse">"Be still, and know that I am God." &mdash; Psalm 46:10</p>
+          <a href="#what" class="btn btn-ghost ff-success-btn" id="ffBackBtn">&larr; Back to FaithFlow</a>
+        </div>
+
+        <p class="form-note reveal" id="ffFormNote">No spam. Real responses from proverbs@christfields2717.com</p>
       </div>
     </section>
 

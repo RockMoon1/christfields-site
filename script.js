@@ -95,16 +95,57 @@ if (messageField && charCounter) {
 }
 
 // --- Netlify Forms: submit handler for any form with data-netlify="true" ---
+
+// Helper: show inline success state (FaithFlow has a full success card; waitlist just updates the button)
+function showFormSuccess(form) {
+  const formName = form.getAttribute('name') || 'form';
+
+  if (formName === 'faithflow') {
+    const successCard = document.getElementById('ffSuccess');
+    const formNote    = document.getElementById('ffFormNote');
+    if (successCard) {
+      form.hidden = true;
+      successCard.hidden = false;
+      if (formNote) formNote.hidden = true;
+      // Smooth scroll to bring the success card into view if needed
+      successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  } else {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) {
+      submitBtn.textContent = "You're in. Welcome to the journey.";
+      submitBtn.style.background = '#2D6A4F';
+      submitBtn.style.color = '#F0F2EE';
+    }
+    form.querySelectorAll('input, select, textarea').forEach(el => {
+      el.disabled = true;
+      el.style.opacity = '0.5';
+    });
+    const cc = form.querySelector('.char-counter') || document.getElementById('charCounter');
+    if (cc) cc.style.display = 'none';
+  }
+}
+
+// Fallback: if the user gets redirected back via ?submitted=1 (JS off, slow JS, or hard navigation),
+// show the success card immediately so they never see Netlify's default thank-you page.
+(function checkSubmittedParam() {
+  if (window.location.search.includes('submitted=1')) {
+    const ffForm = document.getElementById('faithflowForm');
+    if (ffForm) {
+      showFormSuccess(ffForm);
+      // Clean the URL so a refresh doesn't keep the success state
+      if (window.history.replaceState) {
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+      }
+    }
+  }
+})();
+
 document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
   const submitBtn = form.querySelector('button[type="submit"]');
   if (!submitBtn) return;
 
   const originalLabel = submitBtn.textContent;
-  const formName     = form.getAttribute('name') || 'form';
-  const successCopy  = formName === 'faithflow'
-    ? "Thank you. We'll be in touch soon."
-    : "You're in. Welcome to the journey.";
-
   let lastSubmitTime = 0;
   const RATE_LIMIT_MS = 10000;
 
@@ -137,15 +178,7 @@ document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
       });
 
       if (response.ok || response.status === 200 || response.redirected) {
-        submitBtn.textContent = successCopy;
-        submitBtn.style.background = '#2D6A4F';
-        submitBtn.style.color = '#F0F2EE';
-        form.querySelectorAll('input, select, textarea').forEach(el => {
-          el.disabled = true;
-          el.style.opacity = '0.5';
-        });
-        const cc = form.querySelector('.char-counter') || document.getElementById('charCounter');
-        if (cc) cc.style.display = 'none';
+        showFormSuccess(form);
       } else {
         throw new Error(`Status ${response.status}`);
       }
@@ -155,4 +188,16 @@ document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
       submitBtn.disabled = false;
     }
   });
+});
+
+// "Back to FaithFlow" button on the success card — scrolls to top of FaithFlow content
+document.getElementById('ffBackBtn')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  const target = document.getElementById('what');
+  if (target) {
+    const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'));
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - navH, behavior: 'smooth' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 });
