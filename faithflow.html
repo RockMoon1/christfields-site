@@ -244,24 +244,6 @@
       </div>
     </section>
 
-    <!-- ============ COMING RESOURCES ============ -->
-    <section class="section section-dark" id="resources">
-      <div class="container">
-        <div class="section-label reveal">In Development</div>
-        <h2 class="section-title reveal">Coming <em>Resources.</em></h2>
-        <p class="section-desc reveal">As FaithFlow grows, we're building resources to support leaders and groups &mdash; quietly, carefully, without rushing.</p>
-
-        <div class="ff-resources-grid">
-          <div class="ff-resource reveal"><span class="ff-resource-icon">◇</span><span class="ff-resource-name">Group Guides</span></div>
-          <div class="ff-resource reveal"><span class="ff-resource-icon">◇</span><span class="ff-resource-name">Bible Study Outlines</span></div>
-          <div class="ff-resource reveal"><span class="ff-resource-icon">◇</span><span class="ff-resource-name">Leader Expectations</span></div>
-          <div class="ff-resource reveal"><span class="ff-resource-icon">◇</span><span class="ff-resource-name">Prayer Requests</span></div>
-          <div class="ff-resource reveal"><span class="ff-resource-icon">◇</span><span class="ff-resource-name">Event Calendar</span></div>
-          <div class="ff-resource reveal"><span class="ff-resource-icon">◇</span><span class="ff-resource-name">Accountability Check-ins</span></div>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ JOIN / GET INVOLVED ============ -->
     <section class="section section-join" id="join-faithflow">
       <div class="join-ambient"></div>
@@ -312,12 +294,21 @@
           </button>
         </form>
 
-        <!-- Success card — shown after form submits -->
+        <!-- Success card — shown after form submits, with dynamic resource list -->
         <div class="ff-success-card reveal" id="ffSuccess" hidden>
           <span class="scripture-symbol">✦</span>
           <h3 class="ff-success-title">Thank You.</h3>
           <p class="ff-success-msg">Your message has been received. We'll review it and reach out when there is a fitting next step.</p>
-          <p class="ff-success-verse">"Be still, and know that I am God." &mdash; Psalm 46:10</p>
+
+          <!-- Dynamic resource section — populated by script.js based on dropdown choice -->
+          <div class="ff-success-resources" id="ffSuccessResources">
+            <div class="ff-success-divider"></div>
+            <span class="ff-success-eyebrow" id="ffResourcesEyebrow">Trusted Resources</span>
+            <h4 class="ff-success-resources-title" id="ffResourcesTitle"></h4>
+            <p class="ff-success-resources-intro" id="ffResourcesIntro"></p>
+            <ul class="ff-success-resources-list" id="ffResourcesList"></ul>
+          </div>
+
           <a href="#what" class="btn btn-ghost ff-success-btn" id="ffBackBtn">&larr; Back to FaithFlow</a>
         </div>
 
