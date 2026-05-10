@@ -411,10 +411,18 @@ function showFormSuccess(form) {
 
 // Fallback: if the user gets redirected back via ?submitted=1 (JS off, slow JS, or hard navigation),
 // show the success card immediately so they never see Netlify's default thank-you page.
+// We also read &interest=… from the URL so the right tailored content shows up.
 (function checkSubmittedParam() {
-  if (window.location.search.includes('submitted=1')) {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('submitted') === '1') {
     const ffForm = document.getElementById('faithflowForm');
     if (ffForm) {
+      // Restore the user's dropdown choice into the form so showFormSuccess reads it correctly
+      const interest = params.get('interest');
+      if (interest) {
+        const select = ffForm.querySelector('[name="interest"]');
+        if (select) select.value = interest;
+      }
       showFormSuccess(ffForm);
       // Clean the URL so a refresh doesn't keep the success state
       if (window.history.replaceState) {
@@ -427,6 +435,22 @@ function showFormSuccess(form) {
 document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
   const submitBtn = form.querySelector('button[type="submit"]');
   if (!submitBtn) return;
+
+  // For the FaithFlow form: keep the form's `action` URL in sync with the dropdown choice,
+  // so even if JS doesn't intercept the submit, the URL fallback knows what the user picked.
+  if (form.getAttribute('name') === 'faithflow') {
+    const select = form.querySelector('[name="interest"]');
+    if (select) {
+      const updateAction = () => {
+        const v = select.value;
+        form.action = v
+          ? `/faithflow.html?submitted=1&interest=${encodeURIComponent(v)}`
+          : '/faithflow.html?submitted=1';
+      };
+      select.addEventListener('change', updateAction);
+      updateAction();  // run once in case browser auto-restored a value
+    }
+  }
 
   const originalLabel = submitBtn.textContent;
   let lastSubmitTime = 0;
