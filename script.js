@@ -94,28 +94,32 @@ if (messageField && charCounter) {
   });
 }
 
-// --- Waitlist form: submit to Netlify Forms ---
-const waitlistForm = document.getElementById('waitlistForm');
-const submitBtn    = document.getElementById('submitBtn');
+// --- Netlify Forms: submit handler for any form with data-netlify="true" ---
+document.querySelectorAll('form[data-netlify="true"]').forEach(form => {
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (!submitBtn) return;
 
-if (waitlistForm && submitBtn) {
+  const originalLabel = submitBtn.textContent;
+  const formName     = form.getAttribute('name') || 'form';
+  const successCopy  = formName === 'faithflow'
+    ? "Thank you. We'll be in touch soon."
+    : "You're in. Welcome to the journey.";
+
   let lastSubmitTime = 0;
-  const RATE_LIMIT_MS = 10000; // 10 seconds between attempts
+  const RATE_LIMIT_MS = 10000;
 
-  waitlistForm.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Rate limiting — prevent rapid resubmission
     const now = Date.now();
     if (now - lastSubmitTime < RATE_LIMIT_MS) {
       submitBtn.textContent = 'Please wait before trying again.';
-      setTimeout(() => { submitBtn.textContent = 'Join the Journey →'; }, RATE_LIMIT_MS - (now - lastSubmitTime));
+      setTimeout(() => { submitBtn.textContent = originalLabel; }, RATE_LIMIT_MS - (now - lastSubmitTime));
       return;
     }
 
-    // Input validation — format + length (mirrors maxlength attributes)
-    const name  = waitlistForm.querySelector('[name="name"]').value.trim();
-    const email = waitlistForm.querySelector('[name="email"]').value.trim();
+    const name  = form.querySelector('[name="name"]')?.value.trim() || '';
+    const email = form.querySelector('[name="email"]')?.value.trim() || '';
     const emailRe = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
     if (!name || name.length > 100) return;
     if (!email || !emailRe.test(email) || email.length > 254) return;
@@ -125,7 +129,7 @@ if (waitlistForm && submitBtn) {
     lastSubmitTime = Date.now();
 
     try {
-      const formData = new FormData(waitlistForm);
+      const formData = new FormData(form);
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -133,14 +137,15 @@ if (waitlistForm && submitBtn) {
       });
 
       if (response.ok || response.status === 200 || response.redirected) {
-        submitBtn.textContent = "You're in. Welcome to the journey.";
+        submitBtn.textContent = successCopy;
         submitBtn.style.background = '#2D6A4F';
         submitBtn.style.color = '#F0F2EE';
-        waitlistForm.querySelectorAll('input, select, textarea').forEach(el => {
+        form.querySelectorAll('input, select, textarea').forEach(el => {
           el.disabled = true;
           el.style.opacity = '0.5';
         });
-        if (charCounter) charCounter.style.display = 'none';
+        const cc = form.querySelector('.char-counter') || document.getElementById('charCounter');
+        if (cc) cc.style.display = 'none';
       } else {
         throw new Error(`Status ${response.status}`);
       }
@@ -150,4 +155,4 @@ if (waitlistForm && submitBtn) {
       submitBtn.disabled = false;
     }
   });
-}
+});
