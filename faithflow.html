@@ -20,9 +20,12 @@
   <meta name="twitter:image"       content="https://christfields2717.com/assets/og-image.png">
   <meta name="theme-color" content="#060908">
 
-  <!-- Favicon (browser tab icon) -->
-  <link rel="icon" type="image/png" href="/assets/logo.png">
-  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <!-- Favicons + PWA -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://christfields2717.com/faithflow.html">
 
   <title>FaithFlow by Christ Fields</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +34,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="ff-body">
+
+  <a href="#main" class="skip-link">Skip to content</a>
 
   <!-- Ember Field. Scatters on scroll, drifts back together. -->
   <div class="ember-field" id="emberField" aria-hidden="true"></div>
@@ -63,7 +68,7 @@
     </div>
   </nav>
 
-  <main>
+  <main id="main" tabindex="-1">
 
     <!-- ============ HERO ============ -->
     <section class="ff-hero">
