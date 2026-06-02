@@ -203,3 +203,57 @@ document.getElementById('ffBackBtn')?.addEventListener('click', (e) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 });
+
+// --- Receive a Word: AI verse via the /verse serverless function ---
+(function () {
+  const form = document.getElementById('wordForm');
+  if (!form) return;
+
+  const input  = document.getElementById('wordInput');
+  const btn    = document.getElementById('wordBtn');
+  const result = document.getElementById('wordResult');
+  const vEl    = document.getElementById('wordVerse');
+  const rEl    = document.getElementById('wordRef');
+  const eEl    = document.getElementById('wordEnc');
+  const label  = btn ? btn.textContent : 'Receive a Word';
+  let busy = false;
+
+  function render(text, ref, enc) {
+    vEl.textContent = text ? '“' + text + '”' : '';
+    rEl.textContent = ref || '';
+    eEl.textContent = enc || '';
+    result.hidden = false;
+    result.classList.remove('word-result--in');
+    void result.offsetWidth;            // restart the reveal animation
+    result.classList.add('word-result--in');
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (busy) return;
+    busy = true;
+    if (btn) { btn.textContent = 'Listening…'; btn.disabled = true; }
+
+    try {
+      const res = await fetch('/.netlify/functions/verse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: (input.value || '').slice(0, 500) }),
+      });
+      if (!res.ok) throw new Error('status ' + res.status);
+      const data = await res.json();
+      render(data.text, data.reference, data.encouragement);
+    } catch (err) {
+      // Graceful fallback if the function is unavailable (e.g. not yet deployed)
+      render(
+        'Cast all your care upon him; for he careth for you.',
+        '1 Peter 5:7',
+        'Whatever you are carrying right now, you do not carry it alone. Bring it to God, and let these words steady you.'
+      );
+    } finally {
+      if (btn) { btn.textContent = label; btn.disabled = false; }
+      busy = false;
+    }
+  });
+})();

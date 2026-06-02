@@ -33,6 +33,13 @@
   status = 404
   force  = true
 
+# ── Functions ────────────────────────────────────────────────────────────────
+# "Receive a Word" AI endpoint. Requires NVIDIA_API_KEY env var + a
+# functions-capable deploy (Git-connected or Netlify CLI, not plain Drop).
+[functions]
+  directory    = "netlify/functions"
+  node_bundler = "esbuild"
+
 # ── Security Headers (all routes) ────────────────────────────────────────────
 
 [[headers]]

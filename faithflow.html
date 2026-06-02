@@ -227,6 +227,31 @@
       </div>
     </section>
 
+    <!-- ============ RECEIVE A WORD (AI verse via free NVIDIA stack) ============ -->
+    <section class="section" id="receive">
+      <div class="container">
+        <div class="section-label reveal">A Word for Today</div>
+        <h2 class="section-title reveal">Receive a <em>Word.</em></h2>
+        <p class="section-desc reveal">Tell us what is on your heart. We will meet you with Scripture and a moment of encouragement. Nothing is stored, nothing is shared.</p>
+
+        <div class="word-tool reveal">
+          <form id="wordForm" class="word-form" autocomplete="off">
+            <label for="wordInput" class="sr-only">What is on your heart?</label>
+            <textarea id="wordInput" class="word-input" rows="3" maxlength="500"
+              placeholder="What is weighing on you, or what are you grateful for? A few words is enough."></textarea>
+            <button type="submit" class="btn btn-gold" id="wordBtn">Receive a Word &rarr;</button>
+          </form>
+
+          <div class="word-result" id="wordResult" hidden aria-live="polite">
+            <span class="scripture-symbol">&#10022;</span>
+            <blockquote class="word-verse" id="wordVerse"></blockquote>
+            <cite class="word-ref" id="wordRef"></cite>
+            <p class="word-enc" id="wordEnc"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ FUTURE LEADERS (softened. Full criteria shown after submit for serious inquirers.) ============ -->
     <section class="section" id="leaders">
       <div class="container">
